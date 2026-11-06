@@ -1,15 +1,14 @@
 var wms_layers = [];
 
 
-        var lyr_Voyager_0 = new ol.layer.Tile({
-            'title': 'Voyager',
-            'type':'base',
+        var lyr_GoogleSatelliteHybrid_0 = new ol.layer.Tile({
+            'title': 'Google Satellite Hybrid',
             'opacity': 1.000000,
             
             
             source: new ol.source.XYZ({
-            attributions: ' &nbsp &middot; <a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
-                url: 'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+            attributions: ' ',
+                url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
             })
         });
 var format_PlannedCases_1 = new ol.format.GeoJSON();
@@ -54,9 +53,25 @@ var lyr_ImplementedCases_2 = new ol.layer.Vector({
     <img src="styles/legend/ImplementedCases_2_4.png" /> 100 - 500 homes<br />\
     <img src="styles/legend/ImplementedCases_2_5.png" /> 500 - 1000 homes<br />\
     <img src="styles/legend/ImplementedCases_2_6.png" /> 1000 - 3000 homes<br />' });
+var group_Webmap = new ol.layer.Group({
+                                layers: [],
+                                fold: 'open',
+                                title: 'Webmap'});
+var group_StaticMap = new ol.layer.Group({
+                                layers: [],
+                                fold: 'close',
+                                title: 'StaticMap'});
+var group_ReadingGrid = new ol.layer.Group({
+                                layers: [],
+                                fold: 'close',
+                                title: 'ReadingGrid'});
+var group_UnusedStuff = new ol.layer.Group({
+                                layers: [],
+                                fold: 'close',
+                                title: 'UnusedStuff'});
 
-lyr_Voyager_0.setVisible(true);lyr_PlannedCases_1.setVisible(true);lyr_ImplementedCases_2.setVisible(true);
-var layersList = [lyr_Voyager_0,lyr_PlannedCases_1,lyr_ImplementedCases_2];
+lyr_GoogleSatelliteHybrid_0.setVisible(true);lyr_PlannedCases_1.setVisible(true);lyr_ImplementedCases_2.setVisible(true);
+var layersList = [lyr_GoogleSatelliteHybrid_0,lyr_PlannedCases_1,lyr_ImplementedCases_2];
 lyr_PlannedCases_1.set('fieldAliases', {'Location': 'Location', 'Country': 'Country', 'Info': 'Info', 'Status': 'Status', 'Housholds': 'Housholds', 'Link': 'Link', 'id': 'id', });
 lyr_ImplementedCases_2.set('fieldAliases', {'Location': 'Location', 'Country': 'Country', 'Info': 'Info', 'Status': 'Status', 'Housholds': 'Housholds', 'Link': 'Link', 'id': 'id', });
 lyr_PlannedCases_1.set('fieldImages', {'Location': 'TextEdit', 'Country': 'TextEdit', 'Info': 'TextEdit', 'Status': 'TextEdit', 'Housholds': 'TextEdit', 'Link': 'TextEdit', 'id': 'TextEdit', });

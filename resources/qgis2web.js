@@ -9,7 +9,10 @@ var map = new ol.Map({
 });
 
 //initial view - epsg:3857 coordinates if not "Match project CRS"
-map.getView().fit([-10490619.684258, -2455056.690149, 16291403.613098, 12134514.383695], map.getSize());
+map.getView().fit([-2854876.774078, 4478465.759127, 2621525.695467, 8569351.536736], map.getSize());
+
+//full zooms only
+map.getView().setProperties({constrainResolution: true});
 
 ////small screen definition
     var hasTouchScreen = map.getViewport().classList.contains('ol-touch');
@@ -63,9 +66,17 @@ var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
 var sketch;
 
+function stopMediaInPopup() {
+    var mediaElements = container.querySelectorAll('audio, video');
+    mediaElements.forEach(function(media) {
+        media.pause();
+        media.currentTime = 0;
+    });
+}
 closer.onclick = function() {
     container.style.display = 'none';
     closer.blur();
+    stopMediaInPopup();
     return false;
 };
 var overlayPopup = new ol.Overlay({
@@ -151,7 +162,9 @@ function createPopupField(currentFeature, currentFeatureKeys, layer) {
 					popupField += (fieldValue != null ? '<img src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
 				} else if (/\.(mp4|webm|ogg|avi|mov|flv)$/i.test(fieldValue)) {
 					popupField += (fieldValue != null ? '<video controls><source src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" type="video/mp4">Il tuo browser non supporta il tag video.</video></td>' : '');
-				} else {
+				} else if (/\.(mp3|wav|ogg|aac|flac)$/i.test(fieldValue)) {
+                    popupField += (fieldValue != null ? '<audio controls><source src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" type="audio/mpeg">Il tuo browser non supporta il tag audio.</audio></td>' : '');
+                } else {
 					popupField += (fieldValue != null ? autolinker.link(fieldValue.toLocaleString()) + '</td>' : '');
 				}
 			}
@@ -176,42 +189,53 @@ function onPointerMove(evt) {
     var clusteredFeatures;
     var clusterLength;
     var popupText = '<ul>';
+
+    // Collect all features and their layers at the pixel
+    var featuresAndLayers = [];
     map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-        if (layer && feature instanceof ol.Feature && (layer.get("interactive") || layer.get("interactive") == undefined)) {
-            var doPopup = false;
-            for (k in layer.get('fieldImages')) {
-                if (layer.get('fieldImages')[k] != "Hidden") {
-                    doPopup = true;
-                }
-            }
-            currentFeature = feature;
-            currentLayer = layer;
-            clusteredFeatures = feature.get("features");
-            if (clusteredFeatures) {
-				clusterLength = clusteredFeatures.length;
-			}
-            if (typeof clusteredFeatures !== "undefined") {
-                if (doPopup) {
-                    for(var n=0; n<clusteredFeatures.length; n++) {
-                        currentFeature = clusteredFeatures[n];
-                        currentFeatureKeys = currentFeature.getKeys();
-                        popupText += '<li><table>'
-                        popupText += '<a>' + '<b>' + layer.get('popuplayertitle') + '</b>' + '</a>';
-                        popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                        popupText += '</table></li>';    
-                    }
-                }
-            } else {
-                currentFeatureKeys = currentFeature.getKeys();
-                if (doPopup) {
-                    popupText += '<li><table>';
-                    popupText += '<a>' + '<b>' + layer.get('popuplayertitle') + '</b>' + '</a>';
-                    popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                    popupText += '</table></li>';
-                }
-            }
+        if (layer && feature instanceof ol.Feature && (layer.get("interactive") || layer.get("interactive") === undefined)) {
+            featuresAndLayers.push({ feature, layer });
         }
     });
+
+    // Iterate over the features and layers in reverse order
+    for (var i = featuresAndLayers.length - 1; i >= 0; i--) {
+        var feature = featuresAndLayers[i].feature;
+        var layer = featuresAndLayers[i].layer;
+        var doPopup = false;
+        for (k in layer.get('fieldImages')) {
+            if (layer.get('fieldImages')[k] != "Hidden") {
+                doPopup = true;
+            }
+        }
+        currentFeature = feature;
+        currentLayer = layer;
+        clusteredFeatures = feature.get("features");
+        if (clusteredFeatures) {
+            clusterLength = clusteredFeatures.length;
+        }
+        if (typeof clusteredFeatures !== "undefined") {
+            if (doPopup) {
+                for(var n=0; n<clusteredFeatures.length; n++) {
+                    currentFeature = clusteredFeatures[n];
+                    currentFeatureKeys = currentFeature.getKeys();
+                    popupText += '<li><table>'
+                    popupText += '<a>' + '<b>' + layer.get('popuplayertitle') + '</b>' + '</a>';
+                    popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
+                    popupText += '</table></li>';    
+                }
+            }
+        } else {
+            currentFeatureKeys = currentFeature.getKeys();
+            if (doPopup) {
+                popupText += '<li><table>';
+                popupText += '<a>' + '<b>' + layer.get('popuplayertitle') + '</b>' + '</a>';
+                popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
+                popupText += '</table></li>';
+            }
+        }
+    }
+
     if (popupText == '<ul>') {
         popupText = '';
     } else {
@@ -301,6 +325,7 @@ function updatePopup() {
     } else {
         container.style.display = 'none';
         closer.blur();
+        stopMediaInPopup();
     }
 } 
 
@@ -380,7 +405,7 @@ function onSingleClickWMS(evt) {
                 });
             if (url) {
                 const wmsTitle = wms_layers[i][0].get('popuplayertitle');
-                var ldsRoller = '<div id="lds-roller"><img class="lds-roller-img" style="height: 25px; width: 25px;"></img></div>';
+                var ldsRoller = '<div class="roller-switcher" style="height: 25px; width: 25px;"></div>';
 
                 popupCoord = coord;
                 popupContent += ldsRoller;
@@ -426,7 +451,7 @@ function onSingleClickWMS(evt) {
                     })
                     .finally(() => {
                         setTimeout(() => {
-                            var loaderIcon = document.querySelector('#lds-roller');
+                            var loaderIcon = document.querySelector('.roller-switcher');
                             if (loaderIcon) loaderIcon.remove();
                         }, 500); // (0.5 second)
                     });
@@ -509,16 +534,6 @@ map.addControl(Abstract);
 
 //geocoder
 
-var geocoder = new Geocoder('nominatim', {
-  provider: 'osm',
-  lang: 'en-US',
-  placeholder: 'Search place or address ...',
-  limit: 5,
-  keepOpen: true,
-});
-map.addControl(geocoder);
-document.getElementsByClassName('gcd-gl-btn')[0].className += ' fa fa-search';
-
 
 //layer search
 
@@ -599,19 +614,17 @@ document.addEventListener('DOMContentLoaded', function() {
         topLeftContainerDiv.appendChild(zoomControl);
     }
     //geolocate
-    var geolocateControl = document.getElementsByClassName('geolocate')[0];
-    if (geolocateControl) {
+    if (typeof geolocateControl !== 'undefined') {
         topLeftContainerDiv.appendChild(geolocateControl);
     }
     //measure
-    var measureControl = document.getElementsByClassName('measure-control')[0];
-    if (measureControl) {
+    if (typeof measureControl !== 'undefined') {
         topLeftContainerDiv.appendChild(measureControl);
     }
     //geocoder
-    var geocoderControl = document.getElementsByClassName('ol-geocoder')[0];
-    if (geocoderControl) {
-        topLeftContainerDiv.appendChild(geocoderControl);
+    var searchbar = document.getElementsByClassName('photon-geocoder-autocomplete ol-unselectable ol-control')[0];
+    if (searchbar) {
+        topLeftContainerDiv.appendChild(searchbar);
     }
     //search layer
     var searchLayerControl = document.getElementsByClassName('search-layer')[0];

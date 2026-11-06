@@ -31,7 +31,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 0.000000 && value <= 0.500000) {
             style = [ new ol.style.Style({
         image: new ol.style.RegularShape({radius: 8.0 + size, points: 3,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
@@ -39,7 +39,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 1.000000 && value <= 25.000000) {
             style = [ new ol.style.Style({
         image: new ol.style.Circle({radius: 6.0 + size,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
@@ -47,7 +47,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 26.000000 && value <= 100.000000) {
             style = [ new ol.style.Style({
         image: new ol.style.Circle({radius: 9.0 + size,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
@@ -55,7 +55,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 101.000000 && value <= 500.000000) {
             style = [ new ol.style.Style({
         image: new ol.style.Circle({radius: 12.0 + size,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
@@ -63,7 +63,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 501.000000 && value <= 1000.000000) {
             style = [ new ol.style.Style({
         image: new ol.style.Circle({radius: 15.0 + size,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
@@ -71,7 +71,7 @@ var style_PlannedCases_1 = function(feature, resolution){
                     } else if (value >= 1001.000000 && value <= 3000.000000) {
             style = [ new ol.style.Style({
         image: new ol.style.Circle({radius: 18.0 + size,
-            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 0.0}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
+            displacement: [0, 0], stroke: new ol.style.Stroke({color: 'rgba(66,14,59,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'miter', width: 1.52}), fill: new ol.style.Fill({color: 'rgba(214,69,144,0.6)'})}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
